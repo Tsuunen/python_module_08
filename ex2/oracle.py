@@ -9,6 +9,7 @@ if (__name__ == "__main__"):
     LOG_LEVEL = os.environ.get("LOG_LEVEL")
     ZION_ENDPOINT = os.environ.get("ZION_ENDPOINT")
     no_missing = True
+    # Check if an env variable is missing
     if (not MATRIX_MODE):
         print("MATRIX_MODE is missing")
         no_missing = False

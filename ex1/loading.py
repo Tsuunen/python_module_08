@@ -1,6 +1,18 @@
 import importlib.util
 from importlib import metadata
 
+
+def get_packages_version(packages: list) -> None:
+    """Print packages version"""
+    print("Checking dependencies:")
+    print(f"[OK] {packages[0]} ({metadata.version(packages[0])}) \
+- Data manipulation ready")
+    print(f"[OK] {packages[1]} ({metadata.version(packages[1])}) \
+- Network access ready")
+    print(f"[OK] {packages[2]} ({metadata.version(packages[2])}) \
+- Visualization ready")
+
+
 if (__name__ == "__main__"):
     REQUIRED = ["pandas", "requests", "matplotlib"]
     missing = [m for m in REQUIRED if importlib.util.find_spec(m) is None]
@@ -13,13 +25,7 @@ if (__name__ == "__main__"):
         import matplotlib.pyplot as plt
 
         print("\nLOADING STATUS: Loading programs...\n")
-        print("Checking dependencies:")
-        print(f"[OK] {REQUIRED[0]} ({metadata.version(REQUIRED[0])}) \
-- Data manipulation ready")
-        print(f"[OK] {REQUIRED[1]} ({metadata.version(REQUIRED[1])}) \
-- Network access ready")
-        print(f"[OK] {REQUIRED[2]} ({metadata.version(REQUIRED[2])}) \
-- Visualization ready")
+        get_packages_version(REQUIRED)
 
         # Coordonnées (ex: Paris)
         LAT = 45.783
@@ -33,6 +39,7 @@ if (__name__ == "__main__"):
         )
         file_name = "matrix_analysis.png"
 
+        # Fetch weather data
         response = requests.get(URL, timeout=10)
         response.raise_for_status()
         data = response.json()
@@ -40,6 +47,7 @@ if (__name__ == "__main__"):
         print("\nAnalyzing Matrix data...")
         print("Processing 1000 data points...")
 
+        # Create graph with weather data
         df = pd.DataFrame({
             "date": data["daily"]["time"],
             "temp_max": data["daily"]["temperature_2m_max"]
@@ -48,7 +56,6 @@ if (__name__ == "__main__"):
         df["date"] = pd.to_datetime(df["date"])
 
         print("Generating visualization...")
-        # Plot
         plt.figure(figsize=(8, 4))
         plt.plot(df["date"], df["temp_max"], marker="o")
         plt.title("Température maximale sur 7 jours")
@@ -56,7 +63,7 @@ if (__name__ == "__main__"):
         plt.ylabel("Température (°C)")
         plt.grid(True)
 
-        # Sauvegarde PNG
+        # Save PNG
         plt.tight_layout()
         plt.savefig(file_name)
         plt.close()

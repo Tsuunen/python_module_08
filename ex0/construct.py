@@ -9,7 +9,7 @@ if (__name__ == "__main__"):
         print("Welcome to the construct\n")
     else:
         print("You're still plugged in\n")
-    print("Current Python:", sys.executable)
+    print("Current Python:", sys.executable)  # python executable path
     print("Virtual Environment: ", end="")
     if (is_venv):
         print(os.path.basename(sys.prefix))
